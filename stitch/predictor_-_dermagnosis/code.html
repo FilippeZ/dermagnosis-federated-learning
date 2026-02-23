@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DermaGnosis Predictor v2.4</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#06f9f9",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0a0f0f",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(6, 249, 249, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+        .glow-border {
+            box-shadow: 0 0 15px rgba(6, 249, 249, 0.15);
+        }
+        .glass-panel {
+            background: rgba(15, 35, 35, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        @keyframes scan {
+            from { top: 0%; }
+            to { top: 100%; }
+        }
+        .scanning-bar {
+            position: absolute;
+            height: 2px;
+            width: 100%;
+            background: #06f9f9;
+            box-shadow: 0 0 15px #06f9f9;
+            animation: scan 4s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-slate-100 min-h-screen overflow-hidden">
+<div class="relative flex h-screen w-full flex-col overflow-hidden">
+<!-- Top Navigation -->
+<header class="flex items-center justify-between border-b border-primary/20 bg-background-dark/80 px-8 py-3 backdrop-blur-md z-50">
+<div class="flex items-center gap-4">
+<div class="text-primary animate-pulse">
+<span class="material-symbols-outlined text-3xl">clinical_notes</span>
+</div>
+<div>
+<h2 class="text-lg font-bold leading-tight tracking-wider uppercase">DermaGnosis Predictor <span class="text-primary/70 font-light italic">v2.4</span></h2>
+<div class="flex items-center gap-2 text-[10px] text-primary/60 uppercase tracking-widest">
+<span class="flex h-1.5 w-1.5 rounded-full bg-primary"></span>
+                        Neural Engine Online
+                        <span class="ml-4 opacity-50">Secure Connection: AES-256</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex gap-8 border-x border-primary/10 px-8">
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-slate-400 uppercase tracking-tighter">GPU Load</span>
+<div class="h-1 w-20 bg-primary/10 rounded-full mt-1 overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<span class="text-[10px] text-slate-400 uppercase tracking-tighter">Latent Sync</span>
+<span class="text-primary text-xs font-mono">99.8%</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 text-primary border border-primary/20 hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="ml-2 h-10 w-10 rounded-lg border-2 border-primary/30 p-0.5">
+<img class="h-full w-full rounded-sm object-cover opacity-80" data-alt="User avatar for medical specialist profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtVN9hHwK768BFKM7b18lVsd4YjBlqm5rPClq5KC3t-s1R9HlhglMBzA9ovN_AU4Jo97MfH7qdE_lQw-zbiMZ4W-TtNJFdCC5IaI3m7b5i9n8uw2I2bqENd6AYlgxeeJ_TqDTMAUTXZBxIWcbX6ON38J15yASzvpR66LlrcEX8x3PAIG7CR1LjlkXYVmRunfr03aOO9oe8TKjfQYRRBlicSvhsjq43NzfY0ujGdmjQe44gJ5yOa38JAFEupBEGw68YnPnA1jPm-Wo"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden p-4 gap-4">
+<!-- Left Section: Radiomics Pipeline -->
+<section class="flex flex-col flex-[2] gap-4">
+<div class="relative flex flex-1 flex-col rounded-xl border border-primary/20 bg-slate-900/50 overflow-hidden glow-border">
+<div class="flex items-center justify-between border-b border-primary/10 bg-primary/5 px-4 py-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">biotech</span>
+<span class="text-xs font-bold uppercase tracking-widest text-primary">1. Radiomics Pipeline</span>
+</div>
+<div class="flex gap-3">
+<button class="text-[10px] text-primary hover:text-white px-2 py-0.5 border border-primary/30 rounded">ZOOM 4X</button>
+<button class="text-[10px] text-primary hover:text-white px-2 py-0.5 border border-primary/30 rounded">HEATMAP</button>
+</div>
+</div>
+<div class="relative flex-1 bg-black group overflow-hidden">
+<!-- Image Viewer -->
+<div class="absolute inset-0 flex items-center justify-center">
+<img class="max-h-full max-w-full opacity-90 transition-transform duration-700 group-hover:scale-110" data-alt="High resolution dermatoscopic skin lesion medical image" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnOPjYhfLMuUBTBoVCzhdFtaDgucOC0gpI35YUOqEaaaNqYkXgVtdL0Qcsy7-qnSK-2YEC4unRgtpK817ML8DvsMZs08ZsNYpxpYNEijgQJl0VyEqpqguC2N7MHlbyWKufqUnHSKsHYRlcUaz2Aj2GlAGNogvA2VxmlZS4BivZH40tT6JjmQHQ589Lhxb4ouw04z_PSOPJ-NTHa8niKNvqkmxZ_Nwf58X4EJjBrhqgte5Aifc0mqVMzrR7eVzTLGJnULE6TAY-gQQ"/>
+<div class="scanning-bar"></div>
+<div class="absolute inset-0 scanline pointer-events-none opacity-20"></div>
+<!-- Overlays -->
+<div class="absolute inset-0 border border-primary/10 pointer-events-none">
+<div class="absolute top-1/2 left-0 w-full h-px bg-primary/20"></div>
+<div class="absolute top-0 left-1/2 h-full w-px bg-primary/20"></div>
+<!-- Bounding box -->
+<div class="absolute top-1/3 left-1/3 w-32 h-32 border border-primary animate-pulse">
+<span class="absolute -top-6 left-0 text-[10px] bg-primary text-black px-1 font-bold">LESION_A42</span>
+</div>
+</div>
+</div>
+<!-- Floating HUDs -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<div class="glass-panel p-3 rounded border border-primary/30">
+<p class="text-[10px] text-primary font-bold mb-1 uppercase">Feature Analysis</p>
+<div class="space-y-1">
+<div class="flex justify-between w-32 text-[9px] uppercase"><span class="text-slate-400">Symmetry</span><span class="text-primary">8.4</span></div>
+<div class="flex justify-between w-32 text-[9px] uppercase"><span class="text-slate-400">Border</span><span class="text-primary">2.1</span></div>
+<div class="flex justify-between w-32 text-[9px] uppercase"><span class="text-slate-400">Color Index</span><span class="text-primary">4.9</span></div>
+</div>
+</div>
+</div>
+<!-- Viewport Controls -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 glass-panel p-2 rounded-full border border-primary/30">
+<button class="p-2 hover:bg-primary/20 rounded-full text-primary transition-colors"><span class="material-symbols-outlined">zoom_in</span></button>
+<button class="p-2 hover:bg-primary/20 rounded-full text-primary transition-colors"><span class="material-symbols-outlined">zoom_out</span></button>
+<button class="p-2 hover:bg-primary/20 rounded-full text-primary transition-colors"><span class="material-symbols-outlined">pan_tool</span></button>
+<button class="p-2 hover:bg-primary/20 rounded-full text-primary transition-colors"><span class="material-symbols-outlined">layers</span></button>
+<button class="p-2 hover:bg-primary/20 rounded-full text-primary transition-colors"><span class="material-symbols-outlined">screenshot_region</span></button>
+</div>
+</div>
+</div>
+<!-- Bottom Section: EHR NLP Console -->
+<div class="h-48 rounded-xl border border-primary/20 bg-slate-900/50 flex flex-col overflow-hidden">
+<div class="flex items-center justify-between border-b border-primary/10 bg-primary/5 px-4 py-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">terminal</span>
+<span class="text-xs font-bold uppercase tracking-widest text-primary">3. EHR NLP: Medical-BERT Console</span>
+</div>
+<span class="text-[10px] font-mono text-primary/40 italic">STT_ACTIVE:001</span>
+</div>
+<div class="flex-1 p-3 overflow-y-auto font-mono text-[11px] leading-relaxed space-y-1">
+<div class="text-slate-500">[09:41:22] <span class="text-primary">Initializing BERT-Engine...</span> Loaded dictionary (v2.0)</div>
+<div class="text-slate-300">[09:41:23] <span class="bg-primary/20 text-primary px-1">MEDICAL-BERT</span> Tokenizing patient narrative: "Patient reports rapid growth..."</div>
+<div class="text-slate-300">[09:41:24] <span class="bg-primary/20 text-primary px-1">MEDICAL-BERT</span> Identified Entity: <span class="text-primary underline">Melanoma Family History</span> (Conf: 94.2%)</div>
+<div class="text-slate-300">[09:41:25] <span class="bg-primary/20 text-primary px-1">MEDICAL-BERT</span> Extracted Symptom: <span class="text-primary underline">Pruritus</span> in lesion area.</div>
+<div class="text-slate-500 italic">[09:41:26] Cross-referencing with Radiomics segment... Pending.</div>
+<div class="animate-pulse flex items-center gap-2 text-primary">
+<span>_</span>
+<span class="text-[9px] uppercase font-sans font-bold">System Listening for voice-to-text...</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Clinical Profiling -->
+<aside class="flex-1 flex flex-col gap-4">
+<div class="flex flex-col rounded-xl border border-primary/20 bg-slate-900/50 p-6 glow-border h-full overflow-y-auto">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary">person_search</span>
+<span class="text-xs font-bold uppercase tracking-widest text-primary">2. Clinical Profiling</span>
+</div>
+<form class="space-y-6">
+<div class="space-y-4">
+<label class="block">
+<span class="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Patient ID</span>
+<input class="mt-1 block w-full bg-primary/5 border-primary/20 rounded text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary text-sm" type="text" value="PX-44021-X"/>
+</label>
+<div class="grid grid-cols-2 gap-4">
+<label class="block">
+<span class="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Age</span>
+<input class="mt-1 block w-full bg-primary/5 border-primary/20 rounded text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary text-sm" type="number" value="54"/>
+</label>
+<label class="block">
+<span class="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Skin Type</span>
+<select class="mt-1 block w-full bg-primary/5 border-primary/20 rounded text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary text-sm">
+<option>Fitzpatrick II</option>
+<option>Fitzpatrick III</option>
+<option>Fitzpatrick IV</option>
+</select>
+</label>
+</div>
+<label class="block">
+<span class="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Symptom Duration</span>
+<input class="mt-2 block w-full h-1 bg-primary/10 rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+<div class="flex justify-between text-[9px] mt-1 text-primary/60">
+<span>&lt;1 Month</span>
+<span>&gt;12 Months</span>
+</div>
+</label>
+<label class="block">
+<span class="text-[10px] uppercase text-slate-400 font-bold tracking-wider">Medical Notes Summary</span>
+<textarea class="mt-1 block w-full bg-primary/5 border-primary/20 rounded text-slate-100 focus:border-primary focus:ring-1 focus:ring-primary text-xs" placeholder="Describe clinical observations..." rows="4"></textarea>
+</label>
+</div>
+<div class="pt-4 border-t border-primary/10 space-y-3">
+<div class="flex items-center justify-between text-[10px] uppercase font-bold text-slate-500">
+<span>Risk Factors</span>
+<span class="material-symbols-outlined text-sm">info</span>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 rounded-full border border-primary/30 text-[9px] text-primary uppercase bg-primary/5">High UV Exposure</span>
+<span class="px-2 py-1 rounded-full border border-primary/30 text-[9px] text-primary uppercase bg-primary/5">Family History</span>
+<span class="px-2 py-1 rounded-full border border-slate-700 text-[9px] text-slate-500 uppercase">Smoker</span>
+</div>
+</div>
+<div class="mt-auto pt-8">
+<button class="group relative w-full overflow-hidden rounded-lg bg-primary p-4 transition-all hover:scale-[1.02] active:scale-95 shadow-[0_0_20px_rgba(6,249,249,0.4)]" type="button">
+<div class="relative z-10 flex items-center justify-center gap-3">
+<span class="material-symbols-outlined text-black font-bold">bolt</span>
+<span class="font-bold text-black tracking-[0.2em] uppercase">Run Diagnostics</span>
+</div>
+<div class="absolute inset-0 bg-white/20 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+</button>
+<p class="text-center text-[9px] text-slate-500 mt-3 uppercase tracking-tighter">Approx. process time: 1.4 seconds</p>
+</div>
+</form>
+</div>
+</aside>
+</main>
+<!-- Status HUD footer (floating feel) -->
+<footer class="px-8 py-2 bg-background-dark/90 border-t border-primary/20 flex items-center justify-between z-50">
+<div class="flex gap-6 text-[10px] uppercase tracking-widest text-slate-500">
+<div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-green-500"></span> Engine-L4: Active</div>
+<div class="flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-primary"></span> Memory: 12.4GB / 24GB</div>
+<div class="flex items-center gap-2 font-bold text-primary animate-pulse">Scanning Inter-Layer Nodes...</div>
+</div>
+<div class="text-[10px] font-mono text-primary/40">
+                HOST: DERMA-CORE-NODE-07 // 127.0.0.1
+            </div>
+</footer>
+</div>
+</body></html>

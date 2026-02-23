@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DermaGnosis FL Simulation | Federated Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#06f9f9",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0a0a0a",
+                        "panel-dark": "#121d1d",
+                        "border-dark": "#1f2e2e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a;
+        }
+        .mesh-grid {
+            background-image: radial-gradient(circle at 1px 1px, #1f2e2e 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(6, 249, 249, 0.3);
+        }
+        .data-stream {
+            background: linear-gradient(90deg, transparent, rgba(6, 249, 249, 0.2), transparent);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col font-display selection:bg-primary/30">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-border-dark bg-panel-dark/80 backdrop-blur-md px-6 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl">hub</span>
+<h1 class="text-xl font-bold tracking-tight text-slate-100">DermaGnosis <span class="text-primary/80 font-light">FL Simulation</span></h1>
+</div>
+<nav class="hidden md:flex items-center gap-6 ml-4">
+<a class="text-primary text-sm font-semibold flex items-center gap-1" href="#"><span class="material-symbols-outlined text-sm">language</span> Network Topology</a>
+<a class="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#">Federated Nodes</a>
+<a class="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#">Global Model</a>
+<a class="text-slate-400 hover:text-white text-sm font-medium transition-colors" href="#">Audit Logs</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center gap-2 px-3 py-1.5 bg-background-dark border border-border-dark rounded-lg">
+<span class="size-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Aggregator Status: Active</span>
+</div>
+<div class="flex gap-2">
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-background-dark rounded-lg text-sm font-bold hover:brightness-110 transition-all glow-cyan">
+<span class="material-symbols-outlined text-lg">play_arrow</span>
+                    Run Training Cycle
+                </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-slate-800 text-white rounded-lg text-sm font-bold hover:bg-slate-700 transition-all border border-slate-700">
+<span class="material-symbols-outlined text-lg">restart_alt</span>
+                    Reset
+                </button>
+</div>
+<div class="size-9 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center overflow-hidden">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<!-- Sidebar: Node Status & Security -->
+<aside class="w-80 border-r border-border-dark bg-panel-dark flex flex-col overflow-y-auto shrink-0">
+<div class="p-4 border-b border-border-dark">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Security Protocol Health</h3>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark/50 border border-border-dark">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">enhanced_encryption</span>
+<div>
+<p class="text-sm font-semibold">AES-256 E2E</p>
+<p class="text-[10px] text-slate-500">Active Encryption</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-lg bg-background-dark/50 border border-border-dark">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-xl">noise_control_off</span>
+<div>
+<p class="text-sm font-semibold">Differential Privacy</p>
+<p class="text-[10px] text-slate-500">ε = 0.05 budget</p>
+</div>
+</div>
+<div class="flex items-center gap-1">
+<div class="w-8 h-4 bg-primary/20 rounded-full relative">
+<div class="absolute right-0.5 top-0.5 size-3 bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest">Active Hospital Nodes</h3>
+<span class="text-[10px] px-1.5 py-0.5 bg-primary/10 text-primary rounded border border-primary/20">42 Online</span>
+</div>
+<div class="space-y-2">
+<!-- Node Item -->
+<div class="p-3 rounded-lg hover:bg-white/5 transition-colors group cursor-pointer border border-transparent hover:border-border-dark">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-medium text-slate-200">Mayo Clinic - Rochester</p>
+<span class="size-1.5 rounded-full bg-primary"></span>
+</div>
+<div class="flex items-center gap-4 text-[10px] text-slate-500">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">database</span> 240k samples</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">speed</span> 98.2% Accuracy</span>
+</div>
+<div class="mt-2 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary/60 w-[85%]"></div>
+</div>
+</div>
+<!-- Node Item -->
+<div class="p-3 rounded-lg hover:bg-white/5 transition-colors group cursor-pointer border border-transparent hover:border-border-dark">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-medium text-slate-200">Stanford Health Care</p>
+<span class="size-1.5 rounded-full bg-primary animate-pulse"></span>
+</div>
+<div class="flex items-center gap-4 text-[10px] text-slate-500">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">database</span> 185k samples</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">speed</span> 97.8% Accuracy</span>
+</div>
+<div class="mt-2 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary/60 w-[60%]"></div>
+</div>
+</div>
+<!-- Node Item -->
+<div class="p-3 rounded-lg hover:bg-white/5 transition-colors group cursor-pointer border border-transparent hover:border-border-dark">
+<div class="flex justify-between items-start mb-1">
+<p class="text-sm font-medium text-slate-200">Charité Berlin</p>
+<span class="size-1.5 rounded-full bg-primary"></span>
+</div>
+<div class="flex items-center gap-4 text-[10px] text-slate-500">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">database</span> 310k samples</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">speed</span> 99.1% Accuracy</span>
+</div>
+<div class="mt-2 h-1 w-full bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary/60 w-[92%]"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-4 py-2 text-xs font-bold text-slate-400 border border-dashed border-border-dark rounded-lg hover:text-primary hover:border-primary/50 transition-all">
+                    + Add Private Node
+                </button>
+</div>
+</aside>
+<!-- Main Content: Network Topology Map -->
+<section class="flex-1 flex flex-col relative overflow-hidden mesh-grid">
+<!-- Data Mesh Overlay -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+<!-- Abstract Data Paths -->
+<div class="absolute top-1/4 left-1/4 w-[40%] h-[1px] data-stream rotate-12 opacity-40"></div>
+<div class="absolute top-1/2 left-1/3 w-[30%] h-[1px] data-stream -rotate-45 opacity-60"></div>
+<div class="absolute bottom-1/4 right-1/4 w-[50%] h-[1px] data-stream rotate-[160deg] opacity-30"></div>
+</div>
+<!-- Map Viewport -->
+<div class="flex-1 relative p-8 flex items-center justify-center">
+<!-- Central Aggregator -->
+<div class="relative z-10">
+<div class="size-48 rounded-full border border-primary/20 bg-primary/5 flex items-center justify-center relative">
+<div class="size-32 rounded-full border-2 border-primary/40 flex items-center justify-center animate-pulse">
+<div class="size-20 bg-primary/20 rounded-full flex items-center justify-center backdrop-blur-sm border border-primary/60">
+<span class="material-symbols-outlined text-primary text-4xl">cloud_sync</span>
+</div>
+</div>
+<!-- Orbiting Labels -->
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 bg-panel-dark/80 px-3 py-1 rounded border border-border-dark text-[10px] font-bold text-primary whitespace-nowrap">
+                            GLOBAL AGGREGATOR V4.2
+                        </div>
+</div>
+</div>
+<!-- Hospital Nodes Scattered (Simulated) -->
+<div class="absolute top-[15%] left-[20%] group">
+<div class="size-4 bg-primary rounded-full shadow-[0_0_10px_rgba(6,249,249,0.8)] cursor-pointer"></div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 hidden group-hover:block bg-panel-dark p-2 rounded border border-primary/50 min-w-[120px] shadow-2xl z-20">
+<p class="text-[10px] font-bold text-slate-100">Toronto General</p>
+<p class="text-[8px] text-slate-400">Node ID: CA-01</p>
+<div class="mt-1 h-0.5 w-full bg-primary/20 rounded-full"><div class="h-full bg-primary w-2/3"></div></div>
+</div>
+</div>
+<div class="absolute top-[25%] right-[15%] group">
+<div class="size-3 bg-primary/60 rounded-full shadow-[0_0_10px_rgba(6,249,249,0.4)] cursor-pointer hover:bg-primary hover:scale-125 transition-all"></div>
+</div>
+<div class="absolute bottom-[20%] left-[30%] group">
+<div class="size-3 bg-primary/60 rounded-full shadow-[0_0_10px_rgba(6,249,249,0.4)] cursor-pointer hover:bg-primary hover:scale-125 transition-all"></div>
+</div>
+<div class="absolute bottom-[30%] right-[25%] group">
+<div class="size-4 bg-primary rounded-full shadow-[0_0_10px_rgba(6,249,249,0.8)] cursor-pointer"></div>
+</div>
+<!-- Map Background Image (Faded) -->
+<div class="absolute inset-0 z-0 opacity-10 pointer-events-none">
+<img class="w-full h-full object-cover" data-alt="High-tech world map with glowing connections" data-location="Global" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7rUCtP9XlrTEyEOumXwagAvXv4OKTX3ELXxiu5n5IwARU3MHn52PgK4vXEvQyxmeFQ_ZiEDZtohzXEQDWWuOF0dLp-1K41-YF70sQNBMm-4H_Ee72zleC4kzRbvfcNFJxLQIrzB4fnxiazCKWBg04jHfmOL9ZgGnYgKzP5CEp4TMr2FqHZ0ThgRs5PGI6zT3lOiQlati6d2_Fvu5nbkkeSpq3g1UDE11MU232AS7xFwResajYqrwmGAvtklVuRd0TmaybeyTDRo8"/>
+</div>
+</div>
+<!-- Bottom Floating Status Panel -->
+<div class="px-6 pb-6 pt-0 relative z-10">
+<div class="grid grid-cols-4 gap-4">
+<div class="bg-panel-dark/90 backdrop-blur-md border border-border-dark rounded-xl p-4">
+<p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Federated Data</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold text-white">1.24M</span>
+<span class="text-xs text-primary font-medium">+12k today</span>
+</div>
+</div>
+<div class="bg-panel-dark/90 backdrop-blur-md border border-border-dark rounded-xl p-4">
+<p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Global Accuracy</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold text-white">94.2%</span>
+<span class="text-xs text-green-500 font-medium">+0.4%</span>
+</div>
+</div>
+<div class="bg-panel-dark/90 backdrop-blur-md border border-border-dark rounded-xl p-4">
+<p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Privacy Budget (ε)</p>
+<div class="flex items-baseline gap-2">
+<span class="text-2xl font-bold text-white">0.051</span>
+<span class="text-xs text-orange-500 font-medium">-0.002</span>
+</div>
+</div>
+<div class="bg-panel-dark/90 backdrop-blur-md border border-border-dark rounded-xl p-4">
+<p class="text-slate-500 text-[10px] font-bold uppercase tracking-widest mb-1">Training Cycle</p>
+<div class="flex items-center gap-2">
+<span class="text-2xl font-bold text-white">#14</span>
+<div class="flex-1 bg-slate-800 h-2 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[68%]"></div>
+</div>
+<span class="text-xs font-bold text-primary">68%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Controls -->
+<div class="absolute right-6 top-6 flex flex-col gap-2">
+<button class="size-10 bg-panel-dark border border-border-dark rounded-lg flex items-center justify-center hover:bg-slate-800 text-slate-300">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="size-10 bg-panel-dark border border-border-dark rounded-lg flex items-center justify-center hover:bg-slate-800 text-slate-300">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="size-10 bg-panel-dark border border-border-dark rounded-lg flex items-center justify-center hover:bg-slate-800 text-slate-300">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+<button class="size-10 bg-panel-dark border border-border-dark rounded-lg flex items-center justify-center hover:bg-slate-800 text-slate-300">
+<span class="material-symbols-outlined">layers</span>
+</button>
+</div>
+</section>
+<!-- Right Sidebar: Logs & Intelligence -->
+<aside class="w-72 border-l border-border-dark bg-panel-dark flex flex-col overflow-hidden shrink-0">
+<div class="p-4 border-b border-border-dark">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Live Training Logs</h3>
+<div class="h-64 overflow-y-auto font-mono text-[10px] space-y-1.5 scrollbar-hide">
+<div class="text-primary/70">[14:02:11] Init weight aggregation cycle #14</div>
+<div class="text-slate-400">[14:02:12] Mayo-ROC: Local model uploaded (Hash: 8F2A...)</div>
+<div class="text-slate-400">[14:02:13] Charité-BER: Local model uploaded (Hash: 3D1B...)</div>
+<div class="text-green-500/80">[14:02:15] Integrity check passed: 42/42 nodes</div>
+<div class="text-primary/70">[14:02:16] Applying Differential Privacy noise...</div>
+<div class="text-slate-400">[14:02:18] Global weights updating (Epoch 140)</div>
+<div class="text-slate-500 animate-pulse">[14:02:20] Syncing with Stanford-HC...</div>
+<div class="text-slate-500">[14:02:21] Syncing with JohnsHopkins-BAL...</div>
+</div>
+</div>
+<div class="flex-1 p-4 overflow-y-auto">
+<h3 class="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Model Intelligence</h3>
+<div class="space-y-4">
+<div class="p-3 bg-background-dark/50 border border-border-dark rounded-lg">
+<p class="text-[10px] text-slate-500 font-bold mb-2">PRECISION-RECALL CURVE</p>
+<div class="h-24 flex items-end gap-1 px-1">
+<div class="flex-1 bg-primary/20 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/50 h-[75%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-[85%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-full rounded-t-sm"></div>
+</div>
+</div>
+<div class="p-3 bg-background-dark/50 border border-border-dark rounded-lg">
+<div class="flex justify-between items-center mb-3">
+<p class="text-[10px] text-slate-500 font-bold">NODE CONTRIBUTIONS</p>
+<span class="text-[10px] text-primary underline cursor-pointer">View All</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-slate-400">North America</span>
+<span class="text-white font-medium">42%</span>
+</div>
+<div class="w-full bg-slate-800 h-1 rounded-full"><div class="bg-primary h-full w-[42%]"></div></div>
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-slate-400">Europe</span>
+<span class="text-white font-medium">38%</span>
+</div>
+<div class="w-full bg-slate-800 h-1 rounded-full"><div class="bg-primary h-full w-[38%]"></div></div>
+<div class="flex items-center justify-between text-[11px]">
+<span class="text-slate-400">Asia Pacific</span>
+<span class="text-white font-medium">20%</span>
+</div>
+<div class="w-full bg-slate-800 h-1 rounded-full"><div class="bg-primary h-full w-[20%]"></div></div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-background-dark/50 border-t border-border-dark">
+<button class="w-full flex items-center justify-center gap-2 py-3 bg-primary/10 text-primary border border-primary/30 rounded-lg text-xs font-bold hover:bg-primary hover:text-background-dark transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+                    Export Model Weights
+                </button>
+</div>
+</aside>
+</main>
+<!-- Footer Stats -->
+<footer class="h-8 border-t border-border-dark bg-panel-dark px-4 flex items-center justify-between text-[10px] text-slate-500 font-medium">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1"><span class="size-1.5 bg-green-500 rounded-full"></span> Aggregator v4.2.0-stable</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[12px]">schedule</span> Last Sync: 2m ago</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[12px]">verified_user</span> Cryptographically Secured</span>
+<span class="text-slate-600">© 2024 DermaGnosis Federated AI Lab</span>
+</div>
+</footer>
+</body></html>

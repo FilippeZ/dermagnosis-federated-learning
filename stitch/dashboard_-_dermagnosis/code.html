@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DermaGnosis Dashboard | Premium Medical AI Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#06f9f9",
+                        "background-light": "#f5f8f8",
+                        "background-dark": "#0f2323",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #0f2323;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(6, 249, 249, 0.05) 0%, transparent 50%),
+                linear-gradient(rgba(6, 249, 249, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(6, 249, 249, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+        .glass-panel {
+            background: rgba(15, 35, 35, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(6, 249, 249, 0.1);
+        }
+        .glow-cyan {
+            text-shadow: 0 0 10px rgba(6, 249, 249, 0.5);
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(6, 249, 249, 0.1);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="font-display text-slate-100 min-h-screen flex overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 flex-shrink-0 border-r border-primary/10 flex flex-col glass-panel">
+<div class="p-6 border-b border-primary/10 flex items-center gap-3">
+<div class="size-10 bg-primary/20 rounded-lg flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary text-2xl">health_metrics</span>
+</div>
+<div>
+<h1 class="text-slate-100 font-bold tracking-tight text-lg">DermaGnosis</h1>
+<p class="text-primary/60 text-[10px] uppercase tracking-widest font-extrabold">Med-AI Systems</p>
+</div>
+</div>
+<nav class="flex-1 p-4 space-y-2 overflow-y-auto">
+<div class="px-3 py-2 bg-primary/10 border border-primary/20 rounded-lg flex items-center gap-3 text-primary cursor-pointer group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">dashboard</span>
+<span class="text-sm font-semibold tracking-wide">Dashboard</span>
+</div>
+<div class="px-3 py-2 hover:bg-white/5 rounded-lg flex items-center gap-3 text-slate-400 cursor-pointer transition-all group">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">target</span>
+<span class="text-sm font-medium">Predictor</span>
+</div>
+<div class="px-3 py-2 hover:bg-white/5 rounded-lg flex items-center gap-3 text-slate-400 cursor-pointer transition-all group">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">hub</span>
+<span class="text-sm font-medium">FL Simulation</span>
+</div>
+<div class="px-3 py-2 hover:bg-white/5 rounded-lg flex items-center gap-3 text-slate-400 cursor-pointer transition-all group">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">database</span>
+<span class="text-sm font-medium">Clinical Data</span>
+</div>
+<div class="px-3 py-2 hover:bg-white/5 rounded-lg flex items-center gap-3 text-slate-400 cursor-pointer transition-all group">
+<span class="material-symbols-outlined group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium">System Config</span>
+</div>
+</nav>
+<div class="p-4 border-t border-primary/10">
+<div class="bg-primary/5 rounded-lg p-3 border border-primary/20 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="text-[10px] text-slate-500 font-bold uppercase tracking-wider">Storage Usage</span>
+<span class="text-[10px] text-primary font-bold">84%</span>
+</div>
+<div class="w-full bg-slate-800 h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full" style="width: 84%"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative">
+<!-- Header -->
+<header class="h-16 border-b border-primary/10 glass-panel flex items-center justify-between px-8 z-10">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_rgba(6,249,249,0.8)]"></div>
+<span class="text-xs font-bold uppercase tracking-widest text-primary/80">System Online: v2.4.0</span>
+</div>
+<div class="h-4 w-px bg-primary/20"></div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">search</span>
+<input class="bg-background-dark/50 border border-primary/20 rounded-full pl-9 pr-4 py-1 text-xs text-slate-100 focus:outline-none focus:border-primary/50 w-64" placeholder="Search telemetry..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-1.5 bg-red-500 rounded-full"></span>
+</button>
+<div class="flex items-center gap-3 bg-white/5 rounded-full pl-3 pr-1 py-1 border border-white/10">
+<span class="text-xs font-semibold text-slate-300">Dr. Sarah Chen</span>
+<div class="size-8 rounded-full bg-cover bg-center border border-primary/30" data-alt="Medical professional avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAcYzLj4ynPulLIXghu4ROi0GpFQiWNaWra46bs3DlC50_ePx7qYlW8qcaatnTuVBmsepGVFSIKfvjZNtdQ8CP_QlmZzajOVHM4N1-oLBhbDOxI-t0s2_EWe_8rMxsCKIxGb4ThGw0MgIvvSpiLRfQSvTmaCBZpLZrcRdK2NZZylR8H2hXhEfG67jL8FgLAyDrfFqp9EdQ2pjHiQNuC0zNWkUKhLvHmTBwYROesbp9QL23VfkTs7PbyTTPcguPo0Wz9y0YvWBXa8s0')"></div>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="flex-1 p-8 overflow-y-auto custom-scrollbar space-y-6">
+<!-- Hero Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- Main Accuracy Widget -->
+<div class="md:col-span-2 glass-panel rounded-xl p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-8xl text-primary">analytics</span>
+</div>
+<div class="relative z-10 flex flex-col justify-between h-full">
+<div>
+<p class="text-sm font-bold text-primary/70 uppercase tracking-widest">Global Model Status</p>
+<h2 class="text-5xl font-black text-slate-100 mt-2 glow-cyan">CNN Accuracy: <span class="text-primary">94.2%</span></h2>
+</div>
+<div class="mt-8 flex items-end justify-between">
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 font-medium">Precision</span>
+<span class="text-lg font-bold text-slate-200">0.961</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 font-medium">Recall</span>
+<span class="text-lg font-bold text-slate-200">0.928</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs text-slate-500 font-medium">F1 Score</span>
+<span class="text-lg font-bold text-slate-200">0.944</span>
+</div>
+</div>
+<div class="flex items-center gap-2 text-emerald-400 bg-emerald-400/10 px-3 py-1 rounded-full text-xs font-bold border border-emerald-400/20">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                +2.4% vs Epoch-40
+                            </div>
+</div>
+</div>
+</div>
+<!-- Active Nodes Widget -->
+<div class="glass-panel rounded-xl p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Active Nodes</p>
+<span class="material-symbols-outlined text-primary">dns</span>
+</div>
+<h3 class="text-4xl font-black text-slate-100 mt-2 tracking-tight">1,248</h3>
+</div>
+<div class="mt-4 grid grid-cols-8 gap-1 opacity-60">
+<!-- Simulated status matrix -->
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-primary/80"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-slate-700"></div>
+<div class="size-2 rounded-sm bg-primary/60"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-primary/80"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-primary/80"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-primary/60"></div>
+<div class="size-2 rounded-sm bg-slate-700"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+<div class="size-2 rounded-sm bg-primary/40"></div>
+</div>
+<div class="mt-4 flex justify-between text-[10px] font-bold text-slate-500">
+<span>LATENCY: 42ms</span>
+<span class="text-primary/60">GLOBAL OVERVIEW</span>
+</div>
+</div>
+<!-- GPU Clusters -->
+<div class="glass-panel rounded-xl p-6 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<p class="text-sm font-bold text-slate-500 uppercase tracking-widest">Compute Load</p>
+<span class="material-symbols-outlined text-primary">memory</span>
+</div>
+<h3 class="text-4xl font-black text-slate-100 mt-2 tracking-tight">72.4%</h3>
+</div>
+<div class="space-y-3">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[9px] font-bold text-slate-500">
+<span>A100 CLUSTER ALPHA</span>
+<span class="text-primary">88%</span>
+</div>
+<div class="h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="bg-primary h-full shadow-[0_0_8px_rgba(6,249,249,0.8)]" style="width: 88%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-[9px] font-bold text-slate-500">
+<span>H100 CLUSTER BETA</span>
+<span class="text-primary">56%</span>
+</div>
+<div class="h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="bg-primary h-full shadow-[0_0_8px_rgba(6,249,249,0.8)]" style="width: 56%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Data Visualizations -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Convergence Chart -->
+<div class="lg:col-span-2 glass-panel rounded-xl p-6">
+<div class="flex items-center justify-between mb-8">
+<div>
+<h4 class="text-lg font-bold text-slate-100">Model Convergence Progress</h4>
+<p class="text-sm text-slate-500">Validation Loss vs Training Accuracy over Epochs</p>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center gap-2 px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-medium text-slate-400">
+<div class="size-2 rounded-full bg-primary shadow-[0_0_4px_rgba(6,249,249,0.8)]"></div> Accuracy
+                            </div>
+<div class="flex items-center gap-2 px-3 py-1 rounded bg-white/5 border border-white/10 text-xs font-medium text-slate-400">
+<div class="size-2 rounded-full bg-slate-500"></div> Loss
+                            </div>
+</div>
+</div>
+<div class="h-[300px] w-full relative">
+<!-- Custom SVG Chart -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 800 300">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#06f9f9" stop-opacity="0.3"></stop>
+<stop offset="100%" stop-color="#06f9f9" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid lines -->
+<line stroke="rgba(255,255,255,0.05)" x1="0" x2="800" y1="50" y2="50"></line>
+<line stroke="rgba(255,255,255,0.05)" x1="0" x2="800" y1="150" y2="150"></line>
+<line stroke="rgba(255,255,255,0.05)" x1="0" x2="800" y1="250" y2="250"></line>
+<!-- Accuracy Path -->
+<path d="M0,280 Q50,270 100,240 T200,180 T300,120 T400,90 T500,70 T600,60 T700,55 T800,52" fill="none" stroke="#06f9f9" stroke-linecap="round" stroke-width="3"></path>
+<path d="M0,280 Q50,270 100,240 T200,180 T300,120 T400,90 T500,70 T600,60 T700,55 T800,52 L800,300 L0,300 Z" fill="url(#chartGradient)"></path>
+<!-- Loss Path (Dashed) -->
+<path d="M0,50 Q100,60 200,90 T400,160 T600,220 T800,270" fill="none" stroke="rgba(148,163,184,0.5)" stroke-dasharray="8,4" stroke-width="2"></path>
+</svg>
+<!-- Chart Axis Labels -->
+<div class="absolute bottom-0 left-0 right-0 flex justify-between px-2 pt-4 text-[10px] font-bold text-slate-600">
+<span>EPOCH 0</span>
+<span>EPOCH 20</span>
+<span>EPOCH 40</span>
+<span>EPOCH 60</span>
+<span>EPOCH 80</span>
+<span>CURRENT (94)</span>
+</div>
+</div>
+</div>
+<!-- Telemetry Feed -->
+<div class="glass-panel rounded-xl p-6 flex flex-col h-full overflow-hidden">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary text-sm">terminal</span>
+<h4 class="text-sm font-bold text-slate-100 uppercase tracking-widest">Real-time Telemetry</h4>
+</div>
+<div class="flex-1 bg-background-dark/80 rounded border border-white/5 p-4 font-mono text-[11px] overflow-y-auto custom-scrollbar space-y-2">
+<div class="flex gap-2">
+<span class="text-primary opacity-50">[09:42:12]</span>
+<span class="text-slate-300">NODE_B_042: Received training packet (size: 4.2mb)</span>
+</div>
+<div class="flex gap-2">
+<span class="text-primary opacity-50">[09:42:15]</span>
+<span class="text-emerald-400">SUCCESS: Local weights consolidated at node 1024</span>
+</div>
+<div class="flex gap-2">
+<span class="text-primary opacity-50">[09:42:18]</span>
+<span class="text-slate-300">SYSTEM: Epoch-94 processing... (Progress: 88.4%)</span>
+</div>
+<div class="flex gap-2">
+<span class="text-primary opacity-50">[09:42:22]</span>
+<span class="text-primary">SYNC: Global server ping: 12ms (Stable)</span>
+</div>
+<div class="flex gap-2">
+<span class="text-primary opacity-50">[09:42:25]</span>
+<span class="text-amber-400">WARN: High latency detected in London-North cluster</span>
+</div>
+<div class="flex gap-2">
+<span class="text-primary opacity-50">[09:42:28]</span>
+<span class="text-slate-300">NODE_C_012: Initializing differential privacy layer</span>
+</div>
+<div class="flex gap-2">
+<span class="text-primary opacity-50">[09:42:31]</span>
+<span class="text-slate-300">PROCESS: Gradients updated for clinical imageset Alpha</span>
+</div>
+<div class="flex gap-2">
+<span class="text-primary opacity-50">[09:42:35]</span>
+<span class="text-emerald-400">SUCCESS: Validation accuracy reached 94.22%</span>
+</div>
+</div>
+<button class="mt-4 w-full py-2 bg-primary/10 border border-primary/20 text-primary text-[10px] font-bold uppercase tracking-widest rounded hover:bg-primary/20 transition-all">
+                        Download System Logs
+                    </button>
+</div>
+</div>
+<!-- Node Distribution Map / Matrix Section -->
+<div class="glass-panel rounded-xl p-6">
+<div class="flex items-center justify-between mb-6">
+<h4 class="text-lg font-bold text-slate-100">Global Clinical Node Matrix</h4>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-primary"></div>
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Training</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="size-2 rounded-full bg-slate-700"></div>
+<span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Idle</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-10 md:grid-cols-20 gap-2">
+<!-- Repeated elements for a matrix look -->
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group relative cursor-help hover:bg-primary/40">
+<span class="material-symbols-outlined text-[8px] text-primary">circle</span>
+</div>
+<!-- Using a loop structure would be cleaner, but in static HTML we just repeat a few -->
+<div class="aspect-square bg-primary/40 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/60 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/60 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/80 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/40 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/60 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/40 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/60 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<!-- Second row simulated -->
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group relative cursor-help hover:bg-primary/40"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/40 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/60 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/60 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/80 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/40 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/60 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/40 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/60 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/20 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/40 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-primary/40 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/60 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+<div class="aspect-square bg-slate-800 rounded-sm border border-white/5 flex items-center justify-center group hover:bg-slate-700 cursor-help"></div>
+<div class="aspect-square bg-primary/60 rounded-sm border border-primary/10 flex items-center justify-center group hover:bg-primary/80 cursor-help"><span class="material-symbols-outlined text-[8px] text-primary">circle</span></div>
+</div>
+</div>
+</div>
+<!-- System Scanline Overlay -->
+<div class="scanline"></div>
+</main>
+<!-- Right Sidebar / Info Panel (Collapsible) -->
+<aside class="w-80 border-l border-primary/10 glass-panel flex flex-col">
+<div class="p-6 border-b border-primary/10">
+<h5 class="text-sm font-bold text-slate-100 uppercase tracking-widest mb-4">Node Overview</h5>
+<div class="bg-primary/5 rounded-lg border border-primary/20 p-4">
+<div class="flex items-center gap-3">
+<div class="size-12 rounded bg-primary/20 flex items-center justify-center border border-primary/40">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+<div>
+<p class="text-xs text-slate-500 font-bold">PRIMARY HUB</p>
+<p class="text-sm font-bold text-slate-100">Zurich Clinical Labs</p>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-primary/10 grid grid-cols-2 gap-4">
+<div>
+<p class="text-[10px] text-slate-500 font-bold">STATUS</p>
+<p class="text-xs font-bold text-emerald-400">OPTIMAL</p>
+</div>
+<div>
+<p class="text-[10px] text-slate-500 font-bold">UPTIME</p>
+<p class="text-xs font-bold text-slate-100">99.98%</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 flex-1 overflow-y-auto">
+<h5 class="text-sm font-bold text-slate-100 uppercase tracking-widest mb-4">Pending Tasks</h5>
+<div class="space-y-4">
+<div class="p-3 border border-white/5 bg-white/5 rounded-lg hover:border-primary/30 transition-colors cursor-pointer group">
+<div class="flex justify-between items-start">
+<span class="text-xs font-bold text-slate-300 group-hover:text-primary">Dataset Augmentation</span>
+<span class="material-symbols-outlined text-xs text-slate-500">more_vert</span>
+</div>
+<p class="text-[11px] text-slate-500 mt-1">Expanding training set for rare melanoma types (+12k images)</p>
+<div class="mt-2 flex justify-between items-center">
+<div class="flex -space-x-2">
+<div class="size-5 rounded-full bg-slate-700 border border-background-dark"></div>
+<div class="size-5 rounded-full bg-slate-600 border border-background-dark"></div>
+</div>
+<span class="text-[10px] font-bold text-slate-400">80% COMPLETE</span>
+</div>
+</div>
+<div class="p-3 border border-white/5 bg-white/5 rounded-lg hover:border-primary/30 transition-colors cursor-pointer group">
+<div class="flex justify-between items-start">
+<span class="text-xs font-bold text-slate-300 group-hover:text-primary">Edge Node Sync</span>
+<span class="material-symbols-outlined text-xs text-slate-500">more_vert</span>
+</div>
+<p class="text-[11px] text-slate-500 mt-1">Synchronizing weights across 24 regional satellite clinics</p>
+<div class="mt-2 flex justify-between items-center">
+<span class="text-[10px] font-bold text-amber-500">PENDING APPROVAL</span>
+<button class="text-[10px] font-bold text-primary underline">REVIEW</button>
+</div>
+</div>
+</div>
+</div>
+<div class="p-6 mt-auto">
+<div class="rounded-xl overflow-hidden relative group">
+<div class="absolute inset-0 bg-primary/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<img alt="World connection map" class="w-full opacity-40 group-hover:scale-105 transition-transform" data-location="Global" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpXZuDq2WlHdB-jzLaLFSdH184O9VZrlofNzGKgYDpcbH1xxHlF6sDA3A5UE22LTRbTo72kStTPf6DiNeWoG1B_huRAoqLa1fCJ7DBswHXqk1R923bsBWnesmu5lgPLKJ1H-BFmQEXEP0-58FGv-h1GV3Hr9JJByqtY4tjvlxtwEg78VWV63yz8Sdr4q8VoLwl_2B0jg1c95tGb1qXklQK8A7VOyoWh6nHL0ZikolfCpHEZcfABd6pdJB6T_cIxZ8lFHUzAaCPsvs"/>
+<div class="absolute bottom-0 left-0 p-4">
+<p class="text-[10px] font-black text-primary tracking-widest">NETWORK MAP</p>
+<p class="text-xs font-bold text-white">LIVE FL-ORCHESTRATION</p>
+</div>
+</div>
+</div>
+</aside>
+</body></html>

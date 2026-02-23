@@ -1,0 +1,146 @@
+/* DermaGnosis - Premium Dark Medical Theme */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+    --bg-primary: #050d1a;
+    --bg-secondary: #0a1628;
+    --bg-card: rgba(10, 22, 40, 0.85);
+    --accent-teal: #00d4aa;
+    --accent-blue: #007bff;
+    --accent-purple: #7c3aed;
+    --accent-rose: #f43f5e;
+    --accent-amber: #f59e0b;
+    --text-primary: #f0f6ff;
+    --text-secondary: #8ba4c7;
+    --border: rgba(0, 212, 170, 0.15);
+    --glass: rgba(255, 255, 255, 0.04);
+    --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+/* Base */
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif !important;
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+.stApp {
+    background: linear-gradient(135deg, #050d1a 0%, #0a1628 50%, #060f1e 100%);
+}
+
+/* Hide Streamlit branding */
+#MainMenu, footer, header { visibility: hidden; }
+
+/* Sidebar */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #060f1e 0%, #0a1a2e 100%) !important;
+    border-right: 1px solid var(--border) !important;
+}
+
+[data-testid="stSidebar"] .stMarkdown h1,
+[data-testid="stSidebar"] .stMarkdown h2,
+[data-testid="stSidebar"] .stMarkdown h3 {
+    color: var(--accent-teal) !important;
+}
+
+/* Metric cards */
+[data-testid="metric-container"] {
+    background: var(--glass) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+}
+
+[data-testid="metric-container"]:hover {
+    border-color: var(--accent-teal) !important;
+    box-shadow: 0 0 20px rgba(0, 212, 170, 0.15);
+    transform: translateY(-2px);
+}
+
+[data-testid="stMetricValue"] {
+    color: var(--accent-teal) !important;
+    font-weight: 800 !important;
+}
+
+/* Tabs */
+[data-baseweb="tab-list"] {
+    background: var(--glass) !important;
+    border-radius: 10px;
+    gap: 4px;
+}
+
+[data-baseweb="tab"] {
+    background: transparent !important;
+    color: var(--text-secondary) !important;
+    border-radius: 8px !important;
+    transition: all 0.2s ease;
+}
+
+[aria-selected="true"][data-baseweb="tab"] {
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue)) !important;
+    color: white !important;
+    font-weight: 600 !important;
+}
+
+/* Buttons */
+.stButton > button {
+    background: linear-gradient(135deg, var(--accent-teal), var(--accent-blue)) !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 15px rgba(0, 212, 170, 0.25);
+}
+
+.stButton > button:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 25px rgba(0, 212, 170, 0.4) !important;
+}
+
+/* Sliders */
+[data-testid="stSlider"] [role="slider"] {
+    background: var(--accent-teal) !important;
+}
+
+/* Progress bars */
+.stProgress > div > div > div {
+    background: linear-gradient(90deg, var(--accent-teal), var(--accent-blue)) !important;
+}
+
+/* Expanders */
+[data-testid="stExpander"] {
+    background: var(--glass) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+}
+
+/* Select boxes */
+.stSelectbox > div > div {
+    background: var(--bg-secondary) !important;
+    border-color: var(--border) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Code blocks */
+code {
+    font-family: 'JetBrains Mono', monospace !important;
+    background: var(--bg-secondary) !important;
+    color: var(--accent-teal) !important;
+    border-radius: 4px !important;
+    padding: 2px 6px !important;
+}
+
+/* Info/Success/Warning/Error boxes */
+.stAlert {
+    border-radius: 10px !important;
+    border: 1px solid var(--border) !important;
+}
+
+/* DataFrames */
+[data-testid="stDataFrame"] {
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+}
