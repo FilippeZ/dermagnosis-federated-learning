@@ -1,16 +1,17 @@
 # ⚖️ DermaGnosis — Distributed Clinical Intelligence & Federated Learning
-Operationalizing Federated AI and Bayesian XAI for high-risk melanoma diagnostics
+Operationalizing Explainable AI (XAI) and Privacy-Preserving Machine Learning for high-risk clinical software.
 
 Python FastAPI React Federated-Learning GDPR EU-AI-Act Bayesian-XAI
 
-[![Project Status: Production-Ready](https://img.shields.io/badge/Status-Production--Ready-emerald.svg?style=for-the-badge)]()
-[![Compliance: HIPAA | GDPR](https://img.shields.io/badge/Compliance-HIPAA%20%7C%20GDPR-blue?style=for-the-badge)]()
+[![Status: Production-Ready](https://img.shields.io/badge/Status-Production--Ready-emerald.svg?style=for-the-badge)]()
+[![Compliance: HIPAA | GDPR | EU AI Act](https://img.shields.io/badge/Compliance-HIPAA%20%7C%20GDPR%20%7C%20EU%20AI%20Act-blue?style=for-the-badge)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-gray.svg?style=for-the-badge)]()
 
 ---
 
 ## 🖼️ Visual Gallery
 
-### 1. Neural Inception (Landing Page)
+### 1. Neural Inception (System Initialization)
 ![Landing Page](assets/gallery/landing_page.png)
 
 ### 2. Multi-modal Predictor Lab
@@ -22,56 +23,56 @@ Python FastAPI React Federated-Learning GDPR EU-AI-Act Bayesian-XAI
 ---
 
 ## 📋 Overview
-**DermaGnosis** is a next-generation medical XAI (Explainable AI) platform designed to revolutionize early melanoma detection. It operationalizes high-fidelity diagnostics across distributed clinical nodes using a **Federated Learning** architecture, ensuring that all AI-driven decisions satisfy GDPR and EU AI Act mandates for high-risk medical software.
+**DermaGnosis** is an advanced medical Explainable AI (XAI) platform designed to revolutionize the early detection of melanoma. It operationalizes high-fidelity diagnostics across a network of distributed clinical nodes using a **Federated Learning** architecture. This platform is built to mitigate the "black box" risks in clinical AI, ensuring that all machine learning decisions are fully auditable, deeply interpretable, and compliant with sweeping ethical guidelines like the General Data Protection Regulation (GDPR) and the EU AI Act.
 
 ---
 
 ## 🎯 The Problem
-Modern AI in oncology often operates as a "black box" with significant risks:
-- **Privacy Paradox:** Centralizing sensitive dermoscopic images for AI training introduces massive regulatory friction (GDPR/HIPAA).
-- **Decision Dilemma:** An algorithm recommending treatment without clear justification forces clinicians to choose between blind trust or rejection.
-- **Data Silos:** High-quality clinical data is trapped in local institutions, limiting the robustness of centralized models.
-- **Compliance Risk:** Non-compliant AI systems face extreme penalties under the EU AI Act (up to €35M).
+The integration of Machine Learning into clinical oncology frequently encounters critical systemic barriers:
+- **The Privacy-Precision Paradox:** Centralizing highly sensitive dermoscopic images for AI training invites severe regulatory friction and privacy threats.
+- **The Decision Dilemma:** Algorithms that propose critical interventions (e.g., surgical excisions) without providing interpretable clinical justification force physicians into a dangerous choice between blind trust and total rejection.
+- **Algorithmic Bias:** Opaque models may rely on spurious correlations or fail on unrepresented demographics without being detected.
+- **Severe Non-Compliance Penalties:** Operating unexplainable AI systems under the EU AI Act can result in fines reaching up to €35 million or 7% of global annual turnover.
 
 ---
 
 ## ✅ The Solution
-DermaGnosis transforms opaque diagnostics into transparent "glass boxes" using a multi-layered security and explainability framework:
+DermaGnosis transforms classical "black box" neural networks into transparent "glass boxes." It employs a multi-layered security and architectural framework to safely distribute intelligence while enforcing algorithmic accountability:
 
-| Control | Method | What It Audits | Regulation |
+| Control | XAI / Security Method | Objective & Audit Scope | Target Regulation |
 | :--- | :--- | :--- | :--- |
-| 🧬 **Privacy** | FedAvg + DP | Global weight synchronization without raw data leakage | GDPR Art. 22 |
-| 🔍 **Transparency** | Bayesian Posteriors | Feature-level contribution to diagnostic certainty | EU AI Act Art. 13 |
-| 🔬 **Visual Inspection** | Radiomics Extraction | Spatial attribution of malignant morphological features | EU AI Act Art. 13 |
-| 🧪 **Auditability** | Data Lineage | Chronological FIFO tracking of every diagnostic event | EU AI Act Art. 17 |
+| 🧬 **Privacy** | FedAvg + DP ($\epsilon$-noise) | Protects distributed weight synchronization from membership inference | GDPR Art. 32 |
+| 🔍 **Transparency** | Bayesian Posteriors | Exposes individual feature impact for algorithmic justification | GDPR Art. 22 |
+| 🔬 **Inspection** | Radiomics Feature Extraction | Quantifies spatial morphological cues (Asymmetry, Border, Color) | EU AI Act Art. 13 |
+| 🧪 **Auditability** | FIFO Lineage Tracking | Generates an immutable, chronological trail for all diagnostic events | EU AI Act Art. 17 |
 
 ---
 
 ## 🏗️ Architecture
-The project follows a 4-layer **Clinical Mesh** architecture designed for medical-grade reliability:
+The platform operates on a specialized 4-layer **Clinical Mesh**, combining physical distribution with rigorous neural auditing.
 
 ```mermaid
 graph TD
-    A[Physical & Infrastructure] --> B[Neural Framework]
-    B --> C[Privacy & Security Layer]
-    C --> D[Application Intelligence Layer]
+    A[Physical Edge Hubs] --> B[Federated Neural Engine]
+    B --> C[Privacy & Compliance Layer]
+    C --> D[Clinical HUD & Applications]
     
-    subgraph "Application Intelligence Layer"
-        D1[Global Command HUD]
-        D2[Multimodal Predictor Lab]
-        D3[Clinical Registry]
+    subgraph "Application Layer"
+        D1[Global Command Dashboard]
+        D2[Multimodal Predictor Agent]
+        D3[EHR Clinical Registry]
     end
     
-    subgraph "Privacy & Security Layer"
-        C1[Differential Privacy]
-        C2[Lineage Tracking]
-        C3[Secure Persistence]
+    subgraph "Privacy & Compliance Layer"
+        C1[Laplacian Differential Privacy]
+        C2[Lineage Event Tracking]
+        C3[Secure Local SQL Persistence]
     end
     
     subgraph "Neural Framework Layer"
-        B1[Multimodal CV-NLP Pipeline]
+        B1[Multimodal CV-NLP Extractor]
         B2[Bayesian Inference Engine]
-        B3[Federated Aggregator]
+        B3[Decentralized Aggregator]
     end
 ```
 
@@ -79,99 +80,103 @@ graph TD
 
 ## 📂 Project Structure
 ```text
-derma-gnosis/
-├── main.py                    # Production FastAPI entry point
-├── fl_server.py               # Federated Learning central aggregator
-├── fl_client.py               # Edge node training client
-├── requirements.txt           # System dependencies
-├── dermagnosis.db             # Persistent clinical registry (SQLite)
-├── modules/                   # 🆕 Core Intelligent Systems
+dermagnosis-federated-learning/
+├── main.py                    # Core Production API (FastAPI)
+├── fl_server.py               # Central Federated Learning Aggregator
+├── fl_client.py               # Edge Node Simulation Client
+├── requirements.txt           # Python backend dependencies
+├── dermagnosis.db             # Local secure Clinical Registry (SQLite)
+├── assets/                    # Presentation and gallery assets
+│   └── gallery/               
+│
+├── modules/                   # 🧠 Core Algorithmic Systems
 │   ├── core/
-│   │   ├── cv_nlp_pipeline.py # Multimodal feature extraction
-│   │   ├── bayesian_inference.py # Diagnostic logic & XAI scores
-│   │   ├── fl_engine.py       # Simulation & aggregation logic
-│   │   └── image_pipeline.py  # Radiomics processing
-├── frontend/                  # React Command Center
-│   ├── src/
-│   │   ├── components/        # Dashboard, Predictor, FL Mesh modules
-│   │   └── App.jsx            # Dynamic hub orchestration
-└── assets/gallery/            # Clinical visualizations & documentation
+│   │   ├── cv_nlp_pipeline.py    # Hybrid CV-NLP extraction
+│   │   ├── bayesian_inference.py # Risk mapping and evidence fusion
+│   │   ├── fl_engine.py          # Secure Multi-party Computation
+│   │   └── image_pipeline.py     # Deterministic Radiomics evaluation
+│
+└── frontend/                  # ⚛️ Next-Gen Command Center (React)
+    ├── package.json           # Node dependencies
+    ├── vite.config.js         # Frontend bundler configuration
+    ├── index.html             # React Application entry point
+    └── src/
+        ├── App.jsx            # Routing and Global State
+        ├── index.css          # Tailwind & custom CSS rules
+        └── components/        # Isolated modular interfaces
+            ├── LandingPage.jsx  # Frame-by-frame animated initialization
+            ├── Dashboard.jsx    # Real-time telemetry monitoring
+            ├── Predictor.jsx    # Central Diagnostic Hub
+            ├── ClinicalData.jsx # Patient Registry viewer
+            └── FLSimulation.jsx # Federated Learning Mesh Tracker
 ```
 
 ---
 
 ## 🚀 Quick Start
-### 1. Initialize Backend
+### 1. Initialize the Core Backend
+Ensure you are using Python 3.10+.
 ```bash
-# Install dependencies
+# Clone the repository
+git clone https://github.com/FilippeZ/dermagnosis-federated-learning.git
+cd dermagnosis-federated-learning
+
+# Create and activate a virtual environment
+python -m venv venv
+source venv/bin/activate  # Or `venv\Scripts\activate` on Windows
+
+# Install critical dependencies
 pip install -r requirements.txt
 
-# Start specialized medical API
+# Launch the secure API
 python main.py
 ```
 
-### 2. Launch Command Center
+### 2. Launch the Command Center
+Ensure you are using Node.js 18+.
 ```bash
+# Navigate to the frontend directory
 cd frontend
+
+# Install Node modules
 npm install
+
+# Start the Vite development server
 npm run dev
 ```
 
 ---
 
-## ⚖️ Regulatory Compliance
+## ⚖️ Regulatory Compliance & Governance
 
-| Article (GDPR/EU AI Act) | Requirement | DermaGnosis Solution |
-| :--- | :--- | :--- |
-| **GDPR Art. 22** | Right to Explanation | Bayesian Posterior + Feature Contribution Scores |
-| **EU AI Act Art. 13** | Transparency to Users | Radiomics Visual HUD + Clinical NLP Overlays |
-| **EU AI Act Art. 14** | Human Oversight | Physician-Centric Override & Validation workflow |
-| **EU AI Act Art. 17** | Quality Management | Immutable Data Lineage & Persistent Audit Trail |
-
----
-
-## 🏥 Clinical AI Governance
+### Mapping to European Law
+| Regulation | Article | Requirement | DermaGnosis Feature |
+| :--- | :--- | :--- | :--- |
+| **GDPR** | Art. 22 | Right to Explanation | Bayesian Posterior + Radiomics attribution allows clinicians to contest AI decisions. |
+| **EU AI Act** | Art. 9 | Risk Management System | Counterfactual metrics mapped into high/low risk intervals. |
+| **EU AI Act** | Art. 13 | Transparency to Users | Visual Predictor HUD displaying clinical NLP overrides. |
+| **EU AI Act** | Art. 14 | Human Oversight | System designed as "Human-in-the-Loop" for physician validation. |
 
 ### Black Box Risks Mitigated
-| Risk | Severity | Mitigation |
+| Risk Type | Severity Rating | XAI / Security Mitigation |
 | :--- | :--- | :--- |
 | **Opaque Decisions** | 🔴 Critical | Bayesian Confidence Intervals |
-| **Data Leakage** | 🔴 Critical | Federated Model-to-Data Architecture |
-| **Clinical Trust Gap**| 🟠 High | Real-time XAI Logic contribution |
-| **Audit Failures** | 🟠 High | FIFO Event Lineage Tracking |
-
-### Audit Trail
-Every diagnostic event generates a high-fidelity record:
-- **Unique Incident ID:** e.g., `PX-1234-999`
-- **Inference Hash:** Integrity verification of the diagnostic result.
-- **Model Lineage:** Round/version of the global model used.
-- **Clinician Sign-off:** Integration point for board-certified oversight.
+| **Data Leakage** | 🔴 Critical | Federated Decentralized Architecture |
+| **Clinical Trust Gap**| 🟠 High | Real-time dynamic logic contribution display |
+| **Audit Failures** | 🟠 High | Strict FIFO Event Lineage Tracking |
 
 ---
 
-## 🔬 XAI Methods
-
-### Multimodal Bayesian Inference
-Uses probability theory to fuse dermoscopic image features with physician notes. Produces a "Certainty Score" ($P(Risk|Evidence)$) that clarifies the AI's confidence level.
-
-### Federated Data Mesh
-Allows "privacy-preserving collective intelligence". Models improve by learning from many hospitals without any patient images ever leaving their original source.
-
-### Radiomics Feature Mapping
-The system extracts specific morphological cues (Asymmetry, Border, Color) and presents them as direct contributions to the final risk level, ensuring no "silent" decisions.
-
----
-
-## 🛠️ Technologies
-- **Neural Stack:** PyTorch, NumPy, PIL.
-- **Privacy Engine:** FedAvg Protocol, $\epsilon$-Differential Privacy.
-- **Web Interface:** React 18, Framer Motion, Vite, TailwindCSS.
-- **Data Persistence:** FastAPI, SQLite3, Advanced Registry logic.
+## 🛠️ Technology Stack
+- **Machine Learning & Simulation**: PyTorch, NumPy, PIL, SciPy
+- **Federated Engine**: Custom FedAvg implementation with Differential Privacy mechanisms
+- **Secure Persistence**: FastAPI, strictly typed Pydantic models, SQLite3
+- **Frontend Architecture**: React 18, Vite, TailwindCSS (Clinical Dark Theme), Framer Motion, Recharts
 
 ---
 
 ## 📄 License
-This project is licensed under the MIT License — see LICENSE for details.
+This project is licensed under the MIT License — see `LICENSE` for details.
 
 ---
 
