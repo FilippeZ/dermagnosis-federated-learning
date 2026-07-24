@@ -23,7 +23,7 @@ Operationalizing **Privacy-Preserving Machine Learning (PPML)**, **CRISP-ML(Q)**
 
 * **🛡️ The Shield (Protection, Data Security & Federated MLOps)**: The outer shield shape symbolizes protection. In our architecture, it represents defending patients against skin cancer while enforcing a strict *"Compliance-by-Design"* philosophy—protecting sensitive Protected Health Information (PHI) via Privacy-Preserving Machine Learning (Federated Learning with Differential Privacy $\epsilon=1.42$) under GDPR Art. 25/32 and HIPAA standards.
 * **👤 The Human Profile (Patient-Centric Care & Human-in-the-Loop)**: The silhouette of the human face grounds our technical AI in human well-being. It directly aligns with our **Human-in-the-Loop (HITL) Protocol (EU AI Act Art. 14)**, keeping the physician at the center of diagnostic decision-making.
-* **🎯 The Target & Medical Cross (Precision Diagnostics via Radiomics & CV)**: The focus graphic with a medical cross and red target visually explains Explainable AI (XAI). The cross establishes certified clinical authority (EU MDR SaMD Annex I), while the target isolates potential melanomas using Computer Vision (LoG, DoG, Hessian saddle points) and GLCM Radiomics texture extraction before lesions become dangerous.
+* **🎯 The Target & Medical Cross (Precision Diagnostics & Diagnostic Ally)**: The focus graphic with a medical cross and red target visually explains Explainable AI (XAI). The cross establishes certified clinical authority (EU MDR SaMD Annex I), while the target isolates potential melanomas using Computer Vision (LoG, DoG, Hessian saddle points) and GLCM Radiomics texture extraction before lesions become dangerous. Operating strictly as a **"diagnostic ally"**, the system does not replace human medical judgement; rather, it empowers and amplifies the physician's decision-making capabilities within a certified **Human-in-the-Loop (HITL)** framework (EU AI Act Art. 14).
 * **🎨 Trust & Healing Palette (Deep Slate Blue `#0284c7` to Health Emerald `#10b981`)**: Communicates clinical authority, trust, and healing.
 
 ---
@@ -47,6 +47,8 @@ Operationalizing **Privacy-Preserving Machine Learning (PPML)**, **CRISP-ML(Q)**
 
 **DermaGnosis** is an audit-ready Explainable AI (XAI) infrastructure engineered to operationalize early melanoma detection across distributed hospital networks. Moving beyond isolated Jupyter notebooks and opaque "black box" deep neural models, it establishes a mathematically auditable, privacy-preserving MLOps pipeline.
 
+A core innovation of DermaGnosis is its **Multimodal Data Integration & Natural Language Processing (NLP)** engine. Rather than relying solely on Computer Vision and dermoscopic image segmentation, the platform seamlessly ingests and analyzes unstructured clinical notes, patient medical histories, and demographic risk factors from **Electronic Health Records (EHR)**. By combining NLP medical entity extraction with deterministic dermoscopic radiomics (GLCM, Laplacian of Gaussian), DermaGnosis synthesizes a complete, 360-degree multimodal patient profile.
+
 Built from the ground up on a **"Compliance-by-Design"** philosophy, the platform guarantees that every diagnostic decision is mathematically verifiable, privacy-shielded via **Differential Privacy ($\epsilon$-noise)**, and strictly overseen by medical professionals through automated **Human-in-the-Loop (HITL)** protocols under the Software as a Medical Device (SaMD) regulatory umbrella.
 
 ---
@@ -64,13 +66,19 @@ Deploying machine learning models in clinical oncology faces steep systemic road
 
 ## ⚡ The Architectural & MLOps Solution
 
-DermaGnosis replaces opaque neural pipelines with deterministic, auditable **"glass boxes"**. By applying the **CRISP-ML(Q)** lifecycle, it bridges decentralized physical edge hubs with automated regression testing, MLflow provenance, and Bayesian evidence synthesis.
+DermaGnosis replaces opaque deep neural "black boxes" with deterministic, auditable **"glass boxes"**. By applying the **CRISP-ML(Q)** lifecycle and leveraging **Bayesian Networks & Maximum A Posteriori (MAP) evidence synthesis**, the system mathematically handles probabilistic outcomes under clinical uncertainty—offering complete interpretability and confidence bounds rather than opaque predictions.
+
+### ☁️ Multi-Cloud Decentralized Infrastructure
+The platform employs a **Multi-Cloud Architecture** across distributed hospital nodes. Intermediate cloud tier providers manage localized hospital clusters, aggregating node updates locally. The central global server receives only differentially private model updates ($\epsilon$-noise), ensuring that central cloud providers **never gain access to local raw patient files, images, or health databases**.
+
+### ⚙️ High-Throughput API & FIFO Queue Management (MLOps Engineering)
+To handle enterprise clinical workloads across hospital networks, DermaGnosis incorporates **horizontal scaling** and secure REST API data ingestion backed by **FIFO (First In, First Out) queue management**. This guarantees sequential parameter processing, thread-safe asynchronous concurrency, and zero race conditions during peak diagnostic volume.
 
 ### Core Control Domains & Regulatory Alignment
 
 | Domain | Technical Implementation | Objective & Audit Scope | Target Regulation |
 | :--- | :--- | :--- | :--- |
-| 🛡️ **Data Privacy** | Edge Compute & FedAvg + DP ($\epsilon$-Laplace) | Prevents membership inference attacks by masking weight updates; PHI never leaves hospital servers. | GDPR Art. 25 & 32 |
+| 🛡️ **Data Privacy** | Multi-Cloud Edge & FedAvg + DP ($\epsilon$-Laplace) | Prevents membership inference attacks by masking weight updates; PHI never leaves hospital servers. | GDPR Art. 25 & 32 |
 | 🔍 **Observability** | Bayesian Uncertainty Quantification & MAP | Calculates exact confidence scores. Sub-threshold confidence triggers automatic HITL escalation. | GDPR Art. 22 / EU MDR SaMD |
 | 🔬 **Explainability** | Radiomics Feature Extractor (LoG/DoG/GLCM) | Extracts deterministic morphological vectors (Asymmetry, Border, Color, Homogeneity). | EU AI Act Art. 13 & 14 |
 | 🧪 **Traceability** | MLflow & FIFO Immutable Lineage | Maintains an immutable chronological audit log for all training rounds, parameters, and diagnoses. | EU AI Act Art. 11 & 17 / ISO 13485 |
@@ -257,6 +265,16 @@ The services will be available at:
 | **EU AI Act** | Art. 11 & 17 | Technical Documentation & Auditability | Immutable MLflow lineage tracking logging all model parameter shifts and inferences. |
 | **EU AI Act** | Art. 13 & 14 | Transparency & Human Oversight | Automatic HITL escalation banner when Bayesian confidence falls below threshold. |
 | **EU MDR** | SaMD Annex I | Software as a Medical Device Repeatability | Deterministic GLCM, LoG, DoG radiomic feature extractors with regression tests. |
+
+---
+
+## 🧬 Future Roadmap: Genomic & DNA Sequence Analysis
+
+To pioneer the next era of personalized clinical oncology, the DermaGnosis architectural roadmap expands beyond Multimodal Vision-NLP into **Genomic & DNA Sequence Analysis**:
+
+1. **Unique Molecular Cancer Profiling**: Integrating whole-exome and targeted DNA sequencing data to construct a distinct genetic signature for each lesion.
+2. **Polygenic Melanoma Risk Scoring**: Fusing germline mutation markers (e.g., *CDKN2A*, *CDK4*, *BAP1*) into the Bayesian Evidence Fusion core to refine prior risk distributions $P(M)$.
+3. **Next-Generation Precision Therapeutics**: Supporting targeted therapy selection and immunotherapeutic response prediction directly within the Clinical Command HUD.
 
 ---
 
