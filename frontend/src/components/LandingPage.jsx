@@ -5,12 +5,12 @@ const LandingPage = ({ onEnter }) => {
     const [imagesLoaded, setImagesLoaded] = useState(0);
     const [isLoaded, setIsLoaded] = useState(false);
     const [currentFrame, setCurrentFrame] = useState(0);
-    const totalFrames = 60;
+    const totalFrames = 44;
     const canvasRef = useRef(null);
     const imagesRef = useRef([]);
     const requestRef = useRef();
 
-    // The frames are named like "grok-video-1437744d-e742-49f9-b06e-240d7aa4ead4 (1)_000.jpg" to "..._059.jpg"
+    // The frames are named like "Video Project 2_000.jpg" to "Video Project 2_043.jpg"
     useEffect(() => {
         const preloadImages = async () => {
             const loadedImages = [];
@@ -18,9 +18,8 @@ const LandingPage = ({ onEnter }) => {
 
             for (let i = 0; i < totalFrames; i++) {
                 const img = new Image();
-                // Format the number to be 3 digits
                 const numStr = i.toString().padStart(3, '0');
-                const src = `/back/grok-video-1437744d-e742-49f9-b06e-240d7aa4ead4 (1)_${numStr}.jpg`;
+                const src = `/Video_Project_2_000/Video Project 2_${numStr}.jpg`;
 
                 img.src = src;
                 img.onload = () => {
@@ -32,7 +31,6 @@ const LandingPage = ({ onEnter }) => {
                 };
                 img.onerror = () => {
                     console.error(`Failed to load image: ${src}`);
-                    // Ensure we still progress even if an image fails to load
                     loadedCount++;
                     setImagesLoaded(loadedCount);
                     if (loadedCount === totalFrames) {
@@ -52,7 +50,7 @@ const LandingPage = ({ onEnter }) => {
         if (!isLoaded || imagesRef.current.length === 0) return;
 
         let lastTime = 0;
-        const fps = 12; // Slightly faster for responsiveness
+        const fps = 8; // Slightly slower for smoother cinematic playback
         const interval = 1000 / fps;
 
         const animate = (time) => {
@@ -88,39 +86,9 @@ const LandingPage = ({ onEnter }) => {
 
             ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
 
-            // Add a "Digital Analysis" filter effect
-            ctx.filter = 'contrast(1.2) brightness(0.9)';
-
-            // Apply a dark overlay directly on the canvas
-            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            // Sleek cinematic gradient dark overlay
+            ctx.fillStyle = 'rgba(2, 6, 23, 0.45)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-            // Draw a digital grid
-            ctx.strokeStyle = 'rgba(6, 249, 249, 0.08)';
-            ctx.lineWidth = 1;
-            const step = 60;
-            for (let i = 0; i < canvas.width; i += step) {
-                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
-            }
-            for (let j = 0; j < canvas.height; j += step) {
-                ctx.beginPath(); ctx.moveTo(0, j); ctx.lineTo(canvas.width, j); ctx.stroke();
-            }
-
-            // Draw a horizontal scanning line
-            const scanY = (Date.now() / 20) % canvas.height;
-            ctx.strokeStyle = 'rgba(6, 249, 249, 0.2)';
-            ctx.lineWidth = 2;
-            ctx.beginPath(); ctx.moveTo(0, scanY); ctx.lineTo(canvas.width, scanY); ctx.stroke();
-
-            // Draw random "scanning" points / data markers
-            ctx.fillStyle = 'rgba(6, 249, 249, 1)';
-            for (let k = 0; k < 3; k++) {
-                const px = Math.random() * canvas.width;
-                const py = Math.random() * canvas.height;
-                ctx.fillRect(px, py, 15, 2);
-                ctx.font = '8px monospace';
-                ctx.fillText(`ANLZ_${Math.floor(Math.random() * 999)}`, px + 20, py + 5);
-            }
         }
     }, [currentFrame, isLoaded]);
 
@@ -134,23 +102,25 @@ const LandingPage = ({ onEnter }) => {
         };
 
         window.addEventListener('resize', handleResize);
-        handleResize(); // Initial call
+        handleResize();
 
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
-
     return (
-        <div className="relative min-h-screen w-full overflow-hidden bg-slate-950 font-display flex items-center justify-center">
-            {/* Background Canvas */}
+        <div onClick={onEnter} className="relative min-h-screen w-full overflow-hidden bg-slate-950 font-display flex items-center justify-center cursor-pointer">
+            {/* Background Canvas Video */}
             <canvas
                 ref={canvasRef}
-                className="absolute inset-0 z-0 h-full w-full"
+                className="absolute inset-0 z-0 h-full w-full object-cover"
                 style={{
                     filter: isLoaded ? 'none' : 'blur(20px)',
                     transition: 'filter 1s ease-in-out'
                 }}
             />
+
+            {/* Subtle Gradient Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-slate-950/40 pointer-events-none z-1" />
 
             {/* Loading State Overlay */}
             <AnimatePresence>
@@ -160,102 +130,68 @@ const LandingPage = ({ onEnter }) => {
                         exit={{ opacity: 0 }}
                         className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-slate-950"
                     >
-                        <div className="relative group flex-shrink-0 mb-8">
+                        <div className="w-64 bg-slate-800/60 backdrop-blur-md h-1.5 rounded-full overflow-hidden mb-4 border border-white/10">
                             <motion.div
-                                animate={{ opacity: [0.2, 0.5, 0.2], scale: [1, 1.1, 1] }}
-                                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                                className="absolute inset-0 bg-primary/20 blur-xl rounded-full"
-                            />
-                            <img
-                                src="/assets/logoo.png"
-                                alt="DermaGnosis Logo"
-                                className="size-24 object-contain relative z-10 filter contrast-125 brightness-110"
-                            />
-                        </div>
-                        <div className="w-64 bg-slate-800 h-1 rounded-full overflow-hidden mb-4">
-                            <motion.div
-                                className="bg-primary h-full shadow-[0_0_10px_#06f9f9]"
+                                className="bg-gradient-to-r from-teal-400 to-cyan-500 h-full shadow-[0_0_15px_#06b6d4]"
                                 style={{ width: `${(imagesLoaded / totalFrames) * 100}%` }}
                                 layout
                             />
                         </div>
-                        <p className="text-primary font-mono text-xs tracking-[0.2em] uppercase">
-                            Initializing Core Engine [{imagesLoaded}/{totalFrames}]
+                        <p className="text-cyan-400 font-mono text-xs tracking-[0.25em] uppercase">
+                            Loading Platform [{imagesLoaded}/{totalFrames}]
                         </p>
                     </motion.div>
                 )}
             </AnimatePresence>
 
             {/* Main Content Overlay */}
-            <AnimatePresence>
-                {isLoaded && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 1, delay: 0.5 }}
-                        className="relative z-10 flex flex-col items-center text-center max-w-4xl px-6"
-                    >
-                        <motion.div
-                            initial={{ scale: 0.9, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 0.8 }}
-                            className="relative group mb-8"
-                        >
-                            <div className="absolute inset-0 bg-primary/20 blur-[60px] rounded-full mix-blend-screen pointer-events-none" />
-                            <img
-                                src="/assets/logoo.png"
-                                alt="DermaGnosis Logo"
-                                className="size-48 sm:size-64 object-contain relative z-10 drop-shadow-[0_0_30px_rgba(0,242,254,0.3)] filter contrast-125 brightness-110"
-                            />
-                        </motion.div>
+            <div className="relative z-10 flex flex-col items-center text-center max-w-5xl px-6">
+                {/* Main Logo & Tech Badge */}
+                <div className="mb-6 flex flex-col items-center justify-center">
+                    <img
+                        src="/logo.jpeg"
+                        alt="DermaGnosis Logo"
+                        className="h-28 sm:h-36 object-contain rounded-2xl drop-shadow-[0_0_35px_rgba(6,182,212,0.6)] mb-4 border-2 border-cyan-400/30 shadow-2xl"
+                    />
+                    <div className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full bg-cyan-950/80 border border-cyan-400/40 text-cyan-300 text-xs font-semibold uppercase tracking-[0.3em] backdrop-blur-xl shadow-[0_0_25px_rgba(6,182,212,0.3)]">
+                        <span className="relative flex h-2 w-2">
+                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                            <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
+                        </span>
+                        Clinical Intelligence &amp; Federated XAI
+                    </div>
+                </div>
 
-                        <motion.h1
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 1 }}
-                            className="text-5xl sm:text-7xl font-black text-white tracking-[0.15em] uppercase mb-4 drop-shadow-2xl"
-                        >
-                            DermaGnosis
-                        </motion.h1>
+                {/* Clear Title */}
+                <h1 className="text-6xl sm:text-8xl md:text-9xl font-black tracking-[0.08em] text-white drop-shadow-[0_10px_35px_rgba(0,0,0,0.9)] mb-6">
+                    DermaGnosis
+                </h1>
 
-                        <motion.p
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 1.2 }}
-                            className="text-primary tracking-[0.4em] uppercase font-bold text-sm sm:text-base mb-12 drop-shadow-md"
-                        >
-                            Global Clinical Intelligence Hub
-                        </motion.p>
+                {/* Clear Subtitle */}
+                <div className="relative max-w-3xl mb-12">
+                    <p className="text-cyan-100 tracking-[0.3em] uppercase font-bold text-xs sm:text-sm md:text-base leading-relaxed drop-shadow-lg">
+                        Privacy-Preserving Federated Diagnostics &amp; Explainable AI
+                    </p>
+                    <div className="h-[2px] bg-gradient-to-r from-transparent via-cyan-400 to-transparent mt-4 mx-auto w-3/4" />
+                </div>
 
-                        <motion.button
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(0,242,254,0.4)" }}
-                            whileTap={{ scale: 0.95 }}
-                            transition={{ duration: 0.5, delay: 1.5 }}
-                            onClick={onEnter}
-                            className="group relative overflow-hidden rounded-full glass-panel border border-primary/40 bg-black/40 px-10 py-4 backdrop-blur-md transition-all"
-                        >
-                            <span className="absolute inset-0 w-0 bg-primary/20 transition-all duration-[250ms] ease-out group-hover:w-full"></span>
-                            <div className="relative flex items-center gap-3">
-                                <span className="font-bold uppercase tracking-[0.2em] text-white">Initialize System</span>
-                                <span className="material-symbols-outlined text-primary group-hover:translate-x-1 transition-transform">
-                                    arrow_forward_ios
-                                </span>
-                            </div>
-                        </motion.button>
-
-                        {/* Decorative UI Elements */}
-                        <div className="absolute top-0 left-0 w-16 h-16 border-t-2 border-l-2 border-primary/30 rounded-tl-3xl"></div>
-                        <div className="absolute top-0 right-0 w-16 h-16 border-t-2 border-r-2 border-primary/30 rounded-tr-3xl"></div>
-                        <div className="absolute bottom-0 left-0 w-16 h-16 border-b-2 border-l-2 border-primary/30 rounded-bl-3xl"></div>
-                        <div className="absolute bottom-0 right-0 w-16 h-16 border-b-2 border-r-2 border-primary/30 rounded-br-3xl"></div>
-                    </motion.div>
-                )}
-            </AnimatePresence>
-
-            {/* Scanline overlay for that tech feel */}
-            <div className="scanline z-20 pointer-events-none opacity-50"></div>
+                {/* Sleek CTA Button */}
+                <button
+                    type="button"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        if (typeof onEnter === 'function') onEnter();
+                    }}
+                    className="group relative overflow-hidden rounded-2xl bg-gradient-to-r from-cyan-500 via-teal-400 to-cyan-500 p-[2px] shadow-[0_0_35px_rgba(6,182,212,0.4)] transition-all duration-300 hover:scale-105 cursor-pointer z-50 pointer-events-auto"
+                >
+                    <div className="flex items-center gap-4 rounded-[14px] bg-slate-950 px-10 py-4 backdrop-blur-2xl transition-all duration-300 group-hover:bg-slate-900 pointer-events-auto">
+                        <span className="font-bold uppercase tracking-[0.25em] text-white text-sm">Enter Command Center</span>
+                        <span className="material-symbols-outlined text-cyan-300 group-hover:translate-x-1.5 transition-transform duration-300 text-xl">
+                            arrow_forward
+                        </span>
+                    </div>
+                </button>
+            </div>
         </div>
     );
 };

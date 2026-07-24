@@ -29,3 +29,6 @@ brain/
 .agent/
 _agents/
 _agent/
+
+# Duplicate raw video assets (frontend/public/Video_Project_2_000/ is tracked instead)
+/Video Project 2_000/

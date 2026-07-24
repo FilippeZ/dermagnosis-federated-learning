@@ -8,7 +8,10 @@ from dataclasses import dataclass, field
 from typing import Dict, Any, List
 
 try:
-    from pgmpy.models import BayesianNetwork
+    try:
+        from pgmpy.models import DiscreteBayesianNetwork as BayesianNetwork
+    except ImportError:
+        from pgmpy.models import BayesianNetwork
     from pgmpy.factors.discrete import TabularCPD
     from pgmpy.inference import VariableElimination
 except ImportError:

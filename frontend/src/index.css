@@ -1,30 +1,24 @@
 :root {
-    /* Enhanced Stitch Palette - High Contrast Clinical Theme */
-    --primary: #00f2fe;
-    /* Bright Cyan */
-    --primary-alt: #4facfe;
-    /* Deep Blue */
-    --accent: #10b981;
-    /* Emerald Green */
-    --warning: #f59e0b;
-    /* Amber */
-    --danger: #f43f5e;
-    /* Rose Red */
-    --background-dark: #020617;
-    /* Deepest Navy */
-    --panel-dark: rgba(15, 23, 42, 0.7);
-    --border-dark: rgba(51, 65, 85, 0.5);
+    /* Human-Friendly Clinical Light Theme - Crisp White & Soft Medical Blue */
+    --primary: #0284c7;          /* Medical Blue */
+    --primary-alt: #0369a1;      /* Deep Clinical Blue */
+    --accent: #059669;           /* Soft Emerald */
+    --warning: #d97706;          /* Amber */
+    --danger: #e11d48;           /* Clinical Rose */
+    --background-dark: #f8fafc;   /* Crisp Slate Light */
+    --panel-dark: #ffffff;       /* Pure White Cards */
+    --border-dark: #e2e8f0;      /* Soft Border Slate 200 */
 
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
+    --text-primary: #0f172a;     /* Dark Slate 900 */
+    --text-secondary: #475569;   /* Slate 600 */
     --text-muted: #64748b;
 
     --font-display: 'Inter', system-ui, -apple-system, sans-serif;
     --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 
-    --glass-bg: rgba(15, 23, 42, 0.6);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-blur: blur(16px);
+    --glass-bg: #ffffff;
+    --glass-border: #e2e8f0;
+    --glass-blur: blur(0px);
 }
 
 @tailwind base;
@@ -33,13 +27,7 @@
 
 @layer base {
     body {
-        @apply bg-[#020617] text-slate-100 font-display selection:bg-primary/30 min-h-screen overflow-x-hidden;
-        background-image:
-            radial-gradient(circle at 0% 0%, rgba(0, 242, 254, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 100% 100%, rgba(79, 172, 254, 0.05) 0%, transparent 40%),
-            linear-gradient(rgba(0, 242, 254, 0.01) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0, 242, 254, 0.01) 1px, transparent 1px);
-        background-size: 100% 100%, 100% 100%, 50px 50px, 50px 50px;
+        @apply bg-slate-50 text-slate-900 font-display selection:bg-sky-500/20 min-h-screen overflow-x-hidden;
     }
 }
 

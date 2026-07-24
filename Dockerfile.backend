@@ -1,0 +1,41 @@
+# Production Dockerfile for DermaGnosis FastAPI Backend
+FROM python:3.12-slim as builder
+
+WORKDIR /app
+
+# Install system dependencies for OpenCV and C extensions
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy and install python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt gunicorn uvicorn[standard]
+
+# Production Stage
+FROM python:3.12-slim
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1-mesa-glx \
+    libglib2.0-0 \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /usr/local/lib/python3.12/site-packages /usr/local/lib/python3.12/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
+
+COPY . /app
+
+EXPOSE 8001
+
+ENV PYTHONUNBUFFERED=1 \
+    ENVIRONMENT=production \
+    PORT=8001
+
+# Run Gunicorn with Uvicorn workers for high-concurrency production load
+CMD ["gunicorn", "main:app", "-w", "4", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:8001", "--timeout", "120"]

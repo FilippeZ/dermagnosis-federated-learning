@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: dermagnosis-backend
+    restart: always
+    ports:
+      - "8001:8001"
+    environment:
+      - ENVIRONMENT=production
+      - DB_PATH=/app/dermagnosis.db
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-mock_key}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-mock_secret}
+      - GCP_PROJECT_ID=${GCP_PROJECT_ID:-mock_gcp}
+      - AZURE_STORAGE_ACCOUNT=${AZURE_STORAGE_ACCOUNT:-mock_azure}
+    volumes:
+      - sqlite_data:/app/db
+      - ./static:/app/static
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: dermagnosis-frontend
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  sqlite_data:
+    driver: local

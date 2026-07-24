@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import axios from 'axios';
 import { CONFIG } from '../config';
 
@@ -7,10 +6,12 @@ const SystemConfig = () => {
     const [config, setConfig] = useState(null);
     const [loading, setLoading] = useState(true);
     const [toast, setToast] = useState(null);
+    const [editingItem, setEditingItem] = useState(null);
+    const [editValue, setEditValue] = useState('');
 
     const showToast = (msg, type = 'success') => {
         setToast({ msg, type });
-        setTimeout(() => setToast(null), 5000);
+        setTimeout(() => setToast(null), 4000);
     };
 
     const fetchConfig = async () => {
@@ -30,23 +31,26 @@ const SystemConfig = () => {
         fetchConfig();
     }, []);
 
-    const handleModify = async (key) => {
-        const currentValue = config[key];
-        const newValue = prompt(`Modify ${key.replace('_', ' ').toUpperCase()}:`, currentValue);
+    const openModifyModal = (item) => {
+        setEditingItem(item);
+        setEditValue(config[item.key]);
+    };
 
-        if (newValue !== null && newValue !== currentValue) {
-            try {
-                const response = await axios.post(`${CONFIG.API_BASE}/system/config/update`, {
-                    key,
-                    value: isNaN(newValue) ? newValue : parseFloat(newValue)
-                });
-                if (response.data.success) {
-                    showToast(response.data.msg);
-                    fetchConfig();
-                }
-            } catch (err) {
-                showToast("Failed to update configuration.", "error");
+    const saveModifiedConfig = async () => {
+        if (!editingItem) return;
+        try {
+            const val = isNaN(editValue) ? editValue : parseFloat(editValue);
+            const response = await axios.post(`${CONFIG.API_BASE}/system/config/update`, {
+                key: editingItem.key,
+                value: val
+            });
+            if (response.data.success) {
+                showToast(response.data.msg || "Parameter updated successfully.");
+                fetchConfig();
+                setEditingItem(null);
             }
+        } catch (err) {
+            showToast("Failed to update configuration.", "error");
         }
     };
 
@@ -69,97 +73,123 @@ const SystemConfig = () => {
     ] : [];
 
     return (
-        <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            className="p-10 flex flex-col min-h-full gap-8 bg-slate-950/20 relative"
-        >
-            <AnimatePresence>
-                {toast && (
-                    <motion.div
-                        initial={{ opacity: 0, y: -20, x: '-50%' }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -20 }}
-                        className={`absolute top-10 left-1/2 z-50 px-6 py-3 rounded-2xl border backdrop-blur-xl shadow-2xl flex items-center gap-3 ${toast.type === 'success' ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400' :
-                            toast.type === 'primary' ? 'bg-primary/10 border-primary/20 text-primary' :
-                                'bg-red-500/10 border-red-500/20 text-red-500'
-                            }`}
-                    >
-                        <span className="material-symbols-outlined text-sm">
-                            {toast.type === 'success' ? 'check_circle' : toast.type === 'primary' ? 'security' : 'error'}
-                        </span>
-                        <span className="text-[11px] font-black uppercase tracking-widest">{toast.msg}</span>
-                    </motion.div>
-                )}
-            </AnimatePresence>
+        <div className="flex-1 p-6 md:p-8 space-y-6 bg-slate-50 overflow-y-auto custom-scrollbar relative">
+            {/* Notification Toast */}
+            {toast && (
+                <div className={`p-4 rounded-xl border text-xs font-bold flex items-center gap-3 shadow-xl ${
+                    toast.type === 'success' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-rose-50 border-rose-200 text-rose-800'
+                }`}>
+                    <span className="material-symbols-outlined text-lg">
+                        {toast.type === 'success' ? 'check_circle' : 'security'}
+                    </span>
+                    {toast.msg}
+                </div>
+            )}
 
-            <header className="flex justify-between items-end">
-                <div className="space-y-1">
-                    <h2 className="text-4xl font-black uppercase tracking-[0.25em] text-slate-100">
-                        System <span className="text-primary glow-primary italic">Config</span>
-                    </h2>
-                    <p className="text-slate-500 font-black text-[10px] uppercase tracking-[0.2em] px-0.5">
-                        Global Operational Parameters & Neural Thresholds
-                    </p>
+            {/* Header Toolbar */}
+            <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-slate-200">
+                <div>
+                    <h1 className="text-2xl md:text-3xl font-black uppercase tracking-wider text-slate-900">
+                        System <span className="text-sky-600">Config</span>
+                    </h1>
+                    <p className="text-xs text-slate-500">Global Operational Parameters &amp; Neural Thresholds</p>
                 </div>
             </header>
 
-            <main className="grid grid-cols-1 md:grid-cols-2 gap-8 overflow-y-auto custom-scrollbar pr-4">
+            {/* Parameter Cards Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {loading ? (
-                    <div className="col-span-full flex items-center justify-center h-64">
-                        <span className="material-symbols-outlined text-primary animate-spin text-4xl">refresh</span>
+                    <div className="col-span-full flex items-center justify-center py-16 text-slate-400 gap-3">
+                        <span className="material-symbols-outlined text-sky-600 animate-spin text-3xl">refresh</span>
+                        <span className="text-xs font-bold uppercase tracking-wider">Loading System Parameters...</span>
                     </div>
                 ) : (
-                    configItems.map((item, idx) => (
-                        <motion.div
-                            key={item.label}
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: idx * 0.1 }}
-                            className="glass-panel p-8 rounded-[2.5rem] border-white/10 flex items-center justify-between hover:bg-white/5 transition-all group"
-                        >
-                            <div className="flex items-center gap-6">
-                                <div className="size-14 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center group-hover:border-primary/40 transition-colors">
-                                    <span className="material-symbols-outlined text-primary text-2xl font-light">{item.icon}</span>
+                    configItems.map((item) => (
+                        <div key={item.key} className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                                <div className="p-3 rounded-xl bg-sky-50 border border-sky-100 flex items-center justify-center">
+                                    <span className="material-symbols-outlined text-sky-600 text-2xl">{item.icon}</span>
                                 </div>
-                                <div className="space-y-1">
-                                    <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">{item.category}</p>
-                                    <p className="text-sm font-black text-slate-100 tracking-tight">{item.label}</p>
+                                <div>
+                                    <span className="text-[10px] text-sky-600 font-bold uppercase tracking-wider block">{item.category}</span>
+                                    <h4 className="text-sm font-bold text-slate-900 leading-tight">{item.label}</h4>
                                 </div>
                             </div>
                             <div className="flex flex-col items-end gap-2 text-right">
-                                <span className="text-xl font-black text-primary font-mono">{item.value}</span>
+                                <span className="text-xl font-black text-slate-900 font-mono">{item.value}</span>
                                 <button
-                                    onClick={() => handleModify(item.key)}
-                                    className="text-[10px] font-black uppercase text-slate-600 hover:text-white underline underline-offset-4 decoration-primary/40 active:scale-95 transition-all"
+                                    onClick={() => openModifyModal(item)}
+                                    className="px-3 py-1 rounded-lg bg-sky-50 hover:bg-sky-100 text-sky-700 border border-sky-200 text-[10px] font-bold uppercase tracking-wider transition-colors"
                                 >
                                     Modify
                                 </button>
                             </div>
-                        </motion.div>
+                        </div>
                     ))
                 )}
 
-                {/* Advanced Security Block */}
-                <div className="col-span-full glass-panel rounded-[3rem] p-10 border-white/10 bg-gradient-to-br from-primary/5 to-transparent flex flex-col gap-6">
-                    <h3 className="text-xs font-black uppercase tracking-[0.4em] text-slate-500">Hardware Security Module (HSM)</h3>
-                    <div className="flex items-center justify-between">
-                        <div className="flex flex-col gap-2">
-                            <span className="text-emerald-500 text-[10px] font-black uppercase tracking-widest flex items-center gap-2">
-                                <span className="size-1.5 bg-emerald-500 rounded-full animate-pulse shadow-[0_0_10px_#10b981]"></span>
+                {/* Hardware Security Module (HSM) Block */}
+                <div className="col-span-full p-6 rounded-2xl bg-white border border-slate-200 shadow-sm space-y-4">
+                    <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider border-b border-slate-100 pb-2">
+                        Hardware Security Module (HSM)
+                    </h3>
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                        <div>
+                            <span className="text-emerald-600 text-xs font-bold uppercase flex items-center gap-2 mb-1">
+                                <span className="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
                                 Intel SGX Enclave: STATUS_LOCKED
                             </span>
-                            <p className="text-[11px] text-slate-400 font-bold italic">Secure multi-party aggregation active in hardware-isolated trusted environment.</p>
+                            <p className="text-xs text-slate-600">
+                                Secure multi-party aggregation active in hardware-isolated trusted environment.
+                            </p>
                         </div>
                         <button
                             onClick={handleRotateKey}
-                            className="px-8 py-3 bg-slate-900 border border-white/5 text-[10px] font-black uppercase tracking-widest text-slate-300 rounded-xl hover:bg-white/5 transition-all active:scale-95 shadow-xl"
+                            className="px-5 py-2.5 rounded-xl bg-sky-500 hover:bg-sky-600 border border-sky-500 text-xs font-bold uppercase text-white tracking-wider transition-colors shadow-sm"
                         >
                             Rotate Root Key
                         </button>
                     </div>
                 </div>
-            </main>
-        </motion.div>
+            </div>
+
+            {/* Parameter Modify Modal */}
+            {editingItem && (
+                <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+                    <div className="bg-white border border-slate-200 rounded-2xl max-w-md w-full p-6 space-y-4 shadow-2xl">
+                        <div className="flex justify-between items-center border-b border-slate-100 pb-3">
+                            <h3 className="text-sm font-bold text-slate-900 uppercase">Modify {editingItem.label}</h3>
+                            <button onClick={() => setEditingItem(null)} className="text-slate-400 hover:text-slate-900">
+                                <span className="material-symbols-outlined text-xl">close</span>
+                            </button>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-[10px] text-slate-500 font-bold uppercase block">New Value</label>
+                            <input
+                                type="text"
+                                value={editValue}
+                                onChange={(e) => setEditValue(e.target.value)}
+                                className="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-slate-900 font-mono font-bold text-sm outline-none focus:border-sky-500"
+                            />
+                        </div>
+                        <div className="flex justify-end gap-3 pt-2">
+                            <button
+                                onClick={() => setEditingItem(null)}
+                                className="px-4 py-2 rounded-xl bg-slate-100 text-slate-600 text-xs font-bold uppercase hover:bg-slate-200"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={saveModifiedConfig}
+                                className="px-5 py-2 rounded-xl bg-sky-500 hover:bg-sky-600 text-white text-xs font-black uppercase shadow-sm"
+                            >
+                                Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </div>
     );
 };
 
