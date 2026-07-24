@@ -2,7 +2,7 @@
   <img src="assets/logo.png" alt="DermaGnosis Logo" width="240" />
 </p>
 
-# ⚖️ DermaGnosis: Federated MLOps & Explainable AI for Clinical Oncology
+# ⚖️ DermaGnosis: Privacy-Preserving Multimodal AI & Federated MLOps Engine for Clinical Oncology
 
 Operationalizing **Privacy-Preserving Machine Learning (PPML)**, **CRISP-ML(Q)**, and **Audit-Ready AI** for high-risk clinical environments.
 
